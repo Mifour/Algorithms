@@ -5,6 +5,9 @@ class TreeNode:
 		self.right = None
 
 def validate_BST(root):
+"""
+O(n) time and space
+"""
 	def helper(node, lower, upper):
 		if not node:
 			return True

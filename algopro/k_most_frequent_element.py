@@ -1,5 +1,7 @@
 def k_most_frequent_element(array, k):
-
+"""
+O(n) time and space
+"""
 	dico = {}
 	for elem in array:
 		dico[elem] = dico[elem]+1 if elem in dico else 1
@@ -8,6 +10,9 @@ def k_most_frequent_element(array, k):
 
 	return dico[:k]
 
+"""
+Solution from AlgoPro
+"""
 
 def topKFrequent(self, nums, k):
     count = collections.defaultdict(int)

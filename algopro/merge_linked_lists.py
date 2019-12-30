@@ -4,7 +4,9 @@ class Node:
 		self.next = next
 
 def merge_linked_lists(l1, l2):
-
+"""
+O(max(len(a), len(b))) time and space
+"""
 	if l1.value < l2.value:
 		res= Node(l1.value)
 		l1 = l1.next

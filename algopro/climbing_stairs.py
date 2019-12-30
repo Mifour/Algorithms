@@ -1,3 +1,8 @@
+"""
+Climbing stairs problem,
+for a stair with n stairs, how many ways of climbin (1 or 2 stair at a time) exit?
+The problem is linked to fibonnaci sequence
+"""
 def climbing_stairs(n):
 	"""
 	n, the number of stairs

@@ -1,5 +1,7 @@
-
-# Solving the case
+"""
+Does a graph has a 3 cycle, yes or no?
+O(n^2) time & space
+"""
 def has_3c(graph):
   nodes = [] 
   adja = {}

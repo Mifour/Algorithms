@@ -25,6 +25,10 @@ def nb_of_islands(matrix):
 				nb+=1
 	return nb - 2
 
+"""
+Solution from Joma ono AlgoPro
+"""
+
 class Solution:
   def numIslands(self, grid):
     def sinkIsland(grid, r, c):

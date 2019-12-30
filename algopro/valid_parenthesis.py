@@ -1,5 +1,9 @@
 
 def valid_parenthesis(array):
+"""
+check the validity of a sequence of parenthesis
+O(n) time and space
+"""
 	def inverse(c):
 		if c == '(':
 			return ')'

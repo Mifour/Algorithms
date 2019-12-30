@@ -1,5 +1,7 @@
 import heapq
-
+"""
+solution from Joma on AlgoPro
+"""
 def findKthLargest(array, k):
 	array = [-val for val in array]
 	heapq.heapify(array)

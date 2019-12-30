@@ -19,6 +19,10 @@ def solve(array):
 	return True
 
 def other_solve(array):
+"""
+O(n) time 
+O(1) space
+"""
 	nb_decrease = 0
 	max_tmp= float('-inf')
 
@@ -34,7 +38,9 @@ def other_solve(array):
 
 	return True
 
-
+"""
+Solution from AlgoPro
+"""
 class Solution:
   def checkPossibility(self, nums):
     idx = None

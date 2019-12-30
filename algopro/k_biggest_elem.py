@@ -1,6 +1,8 @@
 import heapq
 import random
-
+"""
+Soution from AlgoPro
+"""
 def findKthLargest(nums, k):
   return sorted(nums)[len(nums) - k]
 

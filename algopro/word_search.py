@@ -1,5 +1,6 @@
 def word_search(matrix, word):
 	"""
+	search word in matrix of letters
 	matrix being like:
 	[
 		[a, l, i, n, e],
@@ -7,6 +8,8 @@ def word_search(matrix, word):
 		[a, l, i, n, e],
 		[a, l, i, n, e],
 	]
+	O((n-len(word))**2) time
+	O(1) space
 	"""
 
 	# search the first letter in the reduced matrix

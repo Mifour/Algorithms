@@ -1,3 +1,6 @@
+"""
+A pseudo calculator
+"""
 def calcul(entry):
 
 	entry = [c for c in entry if c != ' ']
@@ -37,6 +40,8 @@ print(calcul('1+ 2 - (5-8)')
 # 6
 
 """
+Solution for Joma on AlgoPro
+
 class Solution(object):
   def __eval_helper(self, expression, index):
     op = '+'

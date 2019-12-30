@@ -1,3 +1,7 @@
+
+"""
+Solution from the Techlead on AlgoPro
+"""
 RIGHT = 0
 UP = 1
 LEFT = 2

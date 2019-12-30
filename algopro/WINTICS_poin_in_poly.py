@@ -8,8 +8,9 @@ poly, point = sys.stdin.read().split("' '")
 
 point = parse_tuple(point[:-1])
 poly = list(map(parse_tuple, poly[2:-1].split()))
-
-# Solving the case
+"""
+On a 2d geometric pla, is a point at (x,y) inside a polygon?
+"""
 def get_equation(p1,p2):
 	dx = p2[0]-p1[0] or 0.000001
 	a = (p2[1]-p1[1])/dx

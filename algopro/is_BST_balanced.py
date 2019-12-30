@@ -15,6 +15,9 @@ def max_depth(tree):
 def is_BST_balanced(tree):
 	return abs(max_depth(tree.left) - max_depth(tree.right)) < 2
 
+"""
+Soution from AlgoPro
+"""
 class TreeNode:
   def __init__(self, x):
     self.val = x

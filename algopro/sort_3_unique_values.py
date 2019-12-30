@@ -1,11 +1,9 @@
 """
 [3,3,2,1,3,2,1] -> [1,1,2,2,3,3,3]
 
+O(n) time
+O(1) space
 """
-
-
-
-
 def sort_3_unique_values(array):
 	counts = {}
 	for n in array:

@@ -1,3 +1,6 @@
+"""
+Solution from Joma on AlgoPro
+"""
 class Solution:
   def canFinish(self, numCourses, prerequisites):
     graph = collections.defaultdict(list)

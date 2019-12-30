@@ -1,4 +1,8 @@
 def longest_sequence_of_two_unique(array):
+"""
+O(n) time 
+O(1) space
+"""
 	lenght = 0 
 	max_length = 0
 	tmp = []

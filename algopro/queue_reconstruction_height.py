@@ -1,5 +1,5 @@
 """
-a list of tuple that represents a queue
+a list of tuple that represents a queue of people
 each guy is (height, the number of guy taller or equal as him in front of him)
 
 [(7,0),(4,4),(7,1),(5,0),(6,1),(5,2)]

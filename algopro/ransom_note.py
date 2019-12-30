@@ -1,3 +1,8 @@
+"""
+is it possible to write a note from a magazine of letter?
+O(n) time 
+O(n) space
+"""
 def ransom_note(note, magazine):
 	histo_note = {0 for l in ["abcdefghijklmnopqrstuvwxyz"]}
 	histo_magazine = {0 for l in ["abcdefghijklmnopqrstuvwxyz"]}

@@ -1,5 +1,6 @@
 """
 	for an array of n integers >1, return an array where result[i] = product of array elems except i
+	O(n) time and space
 """
 
 

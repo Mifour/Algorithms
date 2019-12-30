@@ -4,7 +4,13 @@ class LinkedList:
 		self.next = None
 
 def intersection_liked_lists(a,b):
-	s1 = []
+"""
+return the intersection of 2 linked_lists
+ex: 1->2->3->4->7
+    1->2->3->5
+    return 1->2->3
+O(min(len(a),len(b))) time and space
+"""	s1 = []
 	s2 = []
 
 	while a.val:

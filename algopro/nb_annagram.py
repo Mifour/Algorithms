@@ -14,9 +14,9 @@ def nb_annagram(array):
 
 	return [[key for key, hash in hashing.items() if hash==val ] for val in hashes]
 
-
-#######
-
+"""
+Solution from AlgoPro
+"""
 import collections
 
 def hashkey(str):

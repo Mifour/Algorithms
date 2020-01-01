@@ -12,6 +12,7 @@ rules:
 	the game ends when all 5 dots are guessed (score = 5 blacks, 0 whites)
 */
 use std::fmt::{self, Formatter, Display};
+use std::collections::VecDeque;
 extern crate rand;
 use rand::{thread_rng, Rng};
 #[macro_use(c)]
@@ -72,6 +73,18 @@ impl Display for Code {
 	fn fmt(&self, f: &mut Formatter) -> fmt::Result {
 		write!(f, "{:?}", self.code )
 	}
+}
+
+fn permute(used: &mut Vec<i32>, unused: &mut VecDeque<i32>, mut vector : &mut Vec<Vec<i32>>) {
+    if unused.is_empty() {
+        vector.push(used.to_vec());
+    } else {
+        for _ in 0..unused.len() {
+            used.push(unused.pop_front().unwrap());
+            permute(used, unused, &mut vector);
+            unused.push_back(used.pop().unwrap());
+        }
+    }
 }
 
 fn master_mind(code = code::new()) -> i32{

@@ -15,8 +15,7 @@ use std::fmt::{self, Formatter, Display};
 use std::collections::VecDeque;
 extern crate rand;
 use rand::{thread_rng, Rng};
-#[macro_use(c)]
-extern crate cute;
+
 
 #[derive(Clone)]
 #[derive(Debug)]
@@ -87,7 +86,7 @@ fn permute(used: &mut Vec<i32>, unused: &mut VecDeque<i32>, mut vector : &mut Ve
     }
 }
 
-fn master_mind(code = code::new()) -> i32{
+fn master_mind(mut code: Code) -> i32{
 	/*
 	Determine the colors used. 
 	While searching for colors, try to get information about positions.
@@ -103,25 +102,40 @@ fn master_mind(code = code::new()) -> i32{
 
 	O(m colors + n! positions)
 	*/
+	//let code = Code::new();
 	let mut turn = 0;
 	let mut completed = false;
 	let mut used_colors = Vec::new();
-	let mut impossible = Vec::new();
+	let mut impossible = Vec::<Vec<i32>>::new();
 	let mut certain = vec![-1, -1, -1, -1, -1];
 	let mut to_pos_test = -1;
+	let mut next_color = -1;
 
-	while not completed {
+	while !completed {
 		for color in 0..9 {
 			if to_pos_test != -1 {
 				// use of Cute!
-				let mut possible = c![i, for (i,v) in (&certain).iter().enumerate(), if v == -1];
-				for to_remove in c![k, for nope in impossible for (k,v) in (&nope).iter.enumerate(), if v == to_pos_test] {
-					if possible.contains(to_remove){
-						possible.remove(*to_remove as usize);
+				let mut possible = Vec::new();
+				for (i,v) in certain.iter().enumerate() { 
+					if *v == -1 {
+						possible.push(i);
+					}
+				}
+				let mut to_remove = Vec::new();
+				for nope in impossible.iter() {
+					for (k,v) in nope.iter().enumerate() {
+						if *v == to_pos_test {
+							to_remove.push(k);
+						}
+					}
+				}
+				for elem in to_remove {
+					if possible.contains(&elem){
+						possible.remove(elem as usize);
 					}
 				}
 				let mut position = possible[0];
-				let attempt = Vec::new();
+				let mut attempt = Vec::new();
 				for elem in 0..position{
 					attempt.push(color);
 				}
@@ -131,15 +145,15 @@ fn master_mind(code = code::new()) -> i32{
 				}
 
 				let score = code.score(attempt);
-				if score[0] + score[1] > used_colors.len() {
-					let next_color = color;
+				if score.0 + score.1 > used_colors.len() as i32 {
+					next_color = color;
 				}
 				else {
-					let next_color = to_pos_test;
+					next_color = to_pos_test;
 				}
 
-				if score[1] > 0{
-					for _ in 0..(score[0] + score[1]-1){
+				if score.0 > 0{
+					for _ in 0..(score.0 + score.1-1){
 						used_colors.push(color);
 					}
 					let mut to_push = vec![-1,-1,-1,-1,-1];
@@ -147,7 +161,7 @@ fn master_mind(code = code::new()) -> i32{
 					impossible.push(to_push);
 				}
 				else{
-					for _ in 0..(score[0]-1){
+					for _ in 0..(score.0-1){
 						used_colors.push(color);
 					}
 					certain[position] = to_pos_test;
@@ -157,10 +171,10 @@ fn master_mind(code = code::new()) -> i32{
 			else {
 				let attempt = vec![color,color,color,color,color];
 				let score = code.score(attempt);
-				for _ in 0..score[0]{
+				for _ in 0..score.0{
 						used_colors.push(color);
 					}
-				if score[0] > 0{
+				if score.0 > 0{
 					to_pos_test = color;
 				}
 			}
@@ -170,6 +184,38 @@ fn master_mind(code = code::new()) -> i32{
 			turn += 1;
 
 			// 2nd phase, generating possibilities, removing impossible ones
+		    let mut queue : VecDeque<i32> = VecDeque::from(used_colors);
+		    let mut permutations = Vec::<Vec<i32>>::new();
+		    permute(&mut Vec::new(), &mut queue, &mut permutations);
+		    for attempt in permutations.iter() {
+		    	let mut tmp = Vec::new();
+		    	for index in 0..5{
+		    		if certain[index] == -1 {
+		    			tmp.push(attempt[index]);
+		    		}
+		    		else {
+		    			tmp.push(certain[index]);
+		    		}
+		    	}
+		    	let mut possible : bool = true;
+		    	for nope in impossible.iter(){
+		    		for index in 0..5{
+		    			if nope[index] == attempt[index] {
+		    				possible = false;
+		    			}
+		    		}
+		    	}
+
+		    	if *attempt == tmp && possible {
+		    		let score = code.score(attempt.to_vec());
+		    		completed = score == (5,0);
+		    		if completed {
+		    			break;
+		    		}
+		    		turn +=1;
+		    	}
+		    	
+		    }
 		}
 	}
 	return turn;
@@ -179,13 +225,13 @@ fn master_mind(code = code::new()) -> i32{
 fn main() {
 	let mut res = Vec::new();
 	for _ in 0..10000{
-		let code = Code::new();
+		let mut code = Code::new();
 		res.push(master_mind(code));
 	}
 	let mut mean = 0;
 	for score in res.iter(){
 		mean += score;
 	}
-	mean = mean / res.len();
+	mean = mean / (res.len() as i32);
 	println!("average score is {:?}", mean);
 }

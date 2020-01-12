@@ -189,7 +189,6 @@ fn master_mind(mut code: Code) -> i32{
 				break;
 			}
 			turn += 1;
-			
 		}
 
 		// 2nd phase, generating possibilities, removing impossible ones

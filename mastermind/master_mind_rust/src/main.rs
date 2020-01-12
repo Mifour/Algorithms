@@ -42,34 +42,21 @@ impl Code {
 		let mut to_eval : Vec<i32> = self.code.clone();
 		let mut to_del = Vec::new();
 		let mut deleted = 0_i32;
-		//println!("counting blacks");
+		
 		for dot in 0..5{
 			if attempt[dot] == to_eval[dot]{
 				blacks +=1 ;
 				to_del.push(dot as i32);
 			}
 		}
-		//println!("removing blacks");
+		
 		for dot in to_del.iter(){
 			to_eval.remove((*dot as i32 -deleted) as usize);
 			attempt.remove((*dot as i32 -deleted) as usize);
 			deleted +=1;
 		}
-		//println!("counting whites");
-		//println!("attempt {:?}", attempt);
-		//println!("to_eval {:?}", to_eval);
-		/*
-		for dot in attempt.iter(){
-			if to_eval.contains(dot){
-				whites +=1;
-				//println!("removing dot {:?}", dot);
-				to_eval.remove(*dot as usize);
-			}
-		}
-		*/
 		attempt.iter().position(|n| to_eval.contains(n)).map(|i| { whites +=1; to_eval.remove(i)});
 		
-		//println!("score of attempt: {:?},{:?}", blacks, whites);
 		return (blacks, whites)
 	}
 }
@@ -108,7 +95,7 @@ fn master_mind(mut code: Code) -> i32{
 
 	O(m colors + n! positions)
 	*/
-	//let code = Code::new();
+	
 	let mut turn = 0;
 	let mut completed = false;
 	let mut used_colors = Vec::new();
@@ -119,18 +106,18 @@ fn master_mind(mut code: Code) -> i32{
 
 	while !completed {
 		for color in 0..9 {
-			//println!("0");
+			println!("0");
 			
 			if to_pos_test != -1 {
-				//println!("1");
+				println!("1");
 				let mut possible = Vec::new();
 				for (i,v) in certain.iter().enumerate() { 
 					if *v == -1 {
 						possible.push(i);
 					}
 				}
-				//println!("possible {:?}",possible );
-				//println!("impossible{:?}", impossible);
+				println!("possible {:?}",possible );
+				println!("impossible{:?}", impossible);
 				let mut to_remove = Vec::new();
 				for nope in impossible.iter() {
 					for (k,v) in nope.iter().enumerate() {
@@ -139,18 +126,18 @@ fn master_mind(mut code: Code) -> i32{
 						}
 					}
 				}
-				//println!("to remove {:?}", to_remove);
+				println!("to remove {:?}", to_remove);
 				/*
 				for elem in to_remove {
 					if possible.contains(&elem){
-						//println!("removing {:?}", elem);
+						println!("removing {:?}", elem);
 						possible.remove_item(&elem);
 					}
 				}
 				*/
 				to_remove.iter().position(|n| possible.contains(n)).map(|i| possible.remove(i));
 
-				//println!("11");
+				println!("11");
 				let position = possible[0];
 				let mut attempt = Vec::new();
 				for _ in 0..position{
@@ -160,7 +147,7 @@ fn master_mind(mut code: Code) -> i32{
 				for _ in (position+1)..5{
 					attempt.push(color);
 				}
-				//println!("scoring");
+				println!("scoring");
 				let score = code.score(attempt);
 				if score.0 + score.1 > used_colors.len() as i32 {
 					next_color = color;
@@ -168,7 +155,7 @@ fn master_mind(mut code: Code) -> i32{
 				else {
 					next_color = to_pos_test;
 				}
-				//println!("111");
+				println!("111");
 				if score.0 > 0{
 					for _ in 0..(score.0 + score.1-1){
 						used_colors.push(color);
@@ -186,9 +173,9 @@ fn master_mind(mut code: Code) -> i32{
 				to_pos_test = next_color;
 			}
 			else {
-				//println!("2");
+				println!("2");
 				let attempt = vec![color,color,color,color,color];
-				//println!("scoring");
+				println!("scoring");
 				let score = code.score(attempt);
 				for _ in 0..score.0{
 						used_colors.push(color);
@@ -206,19 +193,19 @@ fn master_mind(mut code: Code) -> i32{
 		}
 
 		// 2nd phase, generating possibilities, removing impossible ones
-		//println!("phase 2");
+		println!("phase 2");
 	    let mut queue : VecDeque<i32> = VecDeque::from(used_colors.clone());
 	    let mut permutations = Vec::<Vec<i32>>::new();
 	    permute(&mut Vec::new(), &mut queue, &mut permutations);
 
-	    //println!("used_colors : {:?}", used_colors);
-	    //println!("certain : {:?}", certain);
-	    //println!("impossible : {:?}", impossible );
+	    println!("used_colors : {:?}", used_colors);
+	    println!("certain : {:?}", certain);
+	    println!("impossible : {:?}", impossible );
 
 	    if used_colors.len() < 5 {return 0;}
 
 	    for attempt in permutations.iter() {
-	    	//println!("attempt: {:?}", attempt);
+	    	println!("attempt: {:?}", attempt);
 	    	let mut tmp = Vec::new();
 	    	for index in 0..5{
 	    		if certain[index] == -1 {
@@ -238,7 +225,7 @@ fn master_mind(mut code: Code) -> i32{
 	    	}
 
 	    	if *attempt == tmp && possible {
-	    		//println!("scoring");
+	    		println!("scoring");
 	    		let score = code.score(attempt.to_vec());
 	    		completed = score == (5,0);
 	    		if completed {
@@ -249,13 +236,14 @@ fn master_mind(mut code: Code) -> i32{
 	    	
 	    }
 	}
+	println!("finish!");
 	return turn;
 
 }
 
 fn main() {
 	let mut res = Vec::new();
-	for _ in 0..10000{
+	for _ in 0..2{
 		let code = Code::new();
 		res.push(master_mind(code));
 	}

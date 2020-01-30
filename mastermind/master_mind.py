@@ -94,11 +94,12 @@ def master_mind(code = Code(), display=False, silent=False):
 	Then, try every combinaisons that match both the dots we're sure about 
 	and none of the impossible combinaisons.
 
-	Possibities of improvements:
-		In phase 2, remove permutations that do not have the same score with the attemps than the attempts themself;
+	In phase 2, remove permutations that do not have the same score with the attemps than the attempts had themself
+		This comes from the evaluation between two attemps has to be the same than the evaluation to the actual 
+		code in order to be coherent. 
 	
-	Average observed score : 10.89
-	Median score: 10 
+	Average observed score : 7.62
+	Median score: 8 
 
 	O(m colors + n! positions)
 	"""
@@ -111,6 +112,7 @@ def master_mind(code = Code(), display=False, silent=False):
 	used_colors = []
 	certain = [None,None,None,None,None]
 	impossible = []
+	trace_attemps = {}
 	to_pos_test = None
 	bits = 0
 	while not completed:
@@ -132,8 +134,12 @@ def master_mind(code = Code(), display=False, silent=False):
 				position = next(iter(possible), 0)
 				attempt = [color for i in range(position)] + [to_pos_test] + [color for i in range(4-position)]
 				if display:
+						print(attempt)
 						print(f'testing {color} and {to_pos_test} at {position}')
-				score  = code.score(attempt)
+				score  = code.score(attempt.copy())
+				if display:
+					print(f"adding {attempt} to trace_attemps")
+				trace_attemps[",".join([str(color) for color in attempt])]=score
 				next_color = color if score[0]+score[1] > len(used_colors) else to_pos_test
 
 				if display:
@@ -156,7 +162,12 @@ def master_mind(code = Code(), display=False, silent=False):
 				if display:
 						print(f'testing {color}')
 				attempt = [color,color,color,color,color]
-				score  = code.score(attempt)
+				if display:
+					print(attempt)
+				score  = code.score(attempt.copy())
+				if display:
+					print(f"adding {attempt} to trace_attemps")
+				trace_attemps[",".join([str(color) for color in attempt])]=score
 				if display:
 					print(score)
 				used_colors+= [color for i in range(score[0])]
@@ -172,21 +183,33 @@ def master_mind(code = Code(), display=False, silent=False):
 			print(f'impossible:')
 			for nope in impossible:
 				print(nope)
+			print(f'trace_attemps:')
+			for trace in trace_attemps:
+				print(trace)
 
 		# 2nd phase
 		for attempt in list(permutations(used_colors)):
 			attempt = list(attempt)
+			coherent = True
+			for trace in trace_attemps:
+				if display:
+					print(f"checkibg coherence with {trace}")
+				if Code([int(color) for color in trace.split(',')]).score(attempt.copy()) != trace_attemps[trace]:
+					coherent = False
+
 			if (
-				attempt == [certain[i] or attempt[i] for i in range(5)] # must comply certain
+				coherent 
+				and attempt == [certain[i] or attempt[i] for i in range(5)] # must comply certain
 				and not any([attempt[i] == nope[i] for nope in impossible for i in range(5)]) # must be completly different than impossible
 			):
 				if display:
 					print(f"attempt {attempt}")
-				score  = code.score(attempt)
+				score  = code.score(attempt.copy())
+				trace_attemps[",".join([str(color) for color in attempt])]=score
 				completed = score == (5,0)
 				if completed:
-					break
 					answer = attempt
+					break
 				turn +=1
 	if not silent:
 		print(f"the code was {answer}")

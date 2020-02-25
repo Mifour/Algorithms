@@ -14,8 +14,8 @@ def monte_carlo():
 		if x**2 + y**2 <= 1:
 			inside +=1
 		total +=1
-
+		print((inside*4)/total)
 		#surface_circle = pi*(1**2) = pi
 		#total_square = (2*1)**2
 		#pi = surface_circle * 4/total_square
-		print((inside*4)/total)
+		
